@@ -4,7 +4,8 @@ from pathlib import Path
 import hmac
 
 import requests
-from fastapi import FastAPI, Header, HTTPException, Request, HTMLResponse, FileResponse
+from fastapi import FastAPI, Header, HTTPException, Request
+from fastapi.responses import HTMLResponse, FileResponse
 
 app = FastAPI()
 
