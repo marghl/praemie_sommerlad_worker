@@ -7,6 +7,10 @@ from fastapi import FastAPI, Header, HTTPException, Request
 
 app = FastAPI()
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 PAPERLESS_URL = os.environ["PAPERLESS_URL"].rstrip("/")
 PAPERLESS_TOKEN = os.environ["PAPERLESS_TOKEN"]
 WORKER_TOKEN = os.environ["WORKER_TOKEN"]

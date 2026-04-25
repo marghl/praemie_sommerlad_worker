@@ -1,0 +1,31 @@
+# docker-compose.yml
+
+services:
+  praemie-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: praemie-sommerlad-worker
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    environment:
+      PAPERLESS_URL: ${PAPERLESS_URL}
+      PAPERLESS_TOKEN: ${PAPERLESS_TOKEN}
+      WORKER_TOKEN: ${WORKER_TOKEN}
+      OUTPUT_DIR: /data
+
+    volumes:
+      - ./data:/data
+
+    ports:
+      - "${WORKER_PORT:-8080}:8080"
+
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
