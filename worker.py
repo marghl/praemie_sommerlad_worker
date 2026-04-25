@@ -1,6 +1,7 @@
 import os
 import subprocess
 from pathlib import Path
+import hmac
 
 import requests
 from fastapi import FastAPI, Header, HTTPException, Request
@@ -46,8 +47,8 @@ def get_document_text(document_id: int) -> str:
 
 @app.post("/webhook")
 async def webhook(request: Request, x_worker_token: str | None = Header(default=None)):
-    if x_worker_token != WORKER_TOKEN:
-        raise HTTPException(status_code=401, detail="unauthorized")
+    if not hmac.compare_digest(x_worker_token or "", WORKER_TOKEN):
+    raise HTTPException(status_code=401, detail="unauthorized")
 
     payload = await request.json()
 
