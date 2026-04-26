@@ -187,12 +187,11 @@ def get_document_text(document_id: int) -> str:
 #TMP for debug
 
 async def webhook(request: Request, x_worker_token: str | None = Header(default=None)):
+    body_bytes = await request.body()
+    body_text = body_bytes.decode("utf-8", errors="replace")
+
     if not hmac.compare_digest(x_worker_token or "", WORKER_TOKEN):
       raise HTTPException(status_code=401, detail="unauthorized")
-
-    async def webhook(request: Request, x_worker_token: str | None = Header(default=None)):
-      body_bytes = await request.body()
-      body_text = body_bytes.decode("utf-8", errors="replace")
 
     logger.info("=== WEBHOOK REQUEST START ===")
     logger.info("Method: %s", request.method)
@@ -201,8 +200,10 @@ async def webhook(request: Request, x_worker_token: str | None = Header(default=
     logger.info("Body: %s", body_text)
     logger.info("=== WEBHOOK REQUEST END ===")
 
-    # danach kannst du JSON normal parsen
-    payload = json.loads(body_text)
+    try:
+        payload = json.loads(body_text) if body_text else {}
+    except json.JSONDecodeError as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid JSON: {exc}")
 
     document_id = (
         payload.get("document_id")
