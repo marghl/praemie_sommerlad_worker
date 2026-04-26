@@ -11,10 +11,12 @@ from fastapi.responses import HTMLResponse, FileResponse
 import json
 import logging
 
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
     stream=sys.stdout,
     format="%(asctime)s [%(levelname)s] [%(name)s] %(message)s")
 logger = logging.getLogger("worker")
+logger.setLevel(logging.DEBUG)
+print(logging.getLogger().level)
 
 app = FastAPI()
 
