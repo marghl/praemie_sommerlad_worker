@@ -210,7 +210,7 @@ async def webhook(request: Request, x_worker_token: str | None = Header(default=
         or payload.get("id")
         or payload.get("document")
     )
-
+    logger.info("document id: %s", document_id)
     if isinstance(document_id, dict):
         document_id = document_id.get("id")
 
