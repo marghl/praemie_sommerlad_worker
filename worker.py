@@ -1,5 +1,5 @@
 import os
-import.sys
+import sys
 import subprocess
 from pathlib import Path
 import hmac
