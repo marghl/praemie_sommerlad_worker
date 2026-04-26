@@ -168,6 +168,12 @@ def get_document(document_id: int) -> dict:
         headers=HEADERS,
         timeout=30,
     )
+    logger.info("=== Paperless REQUEST START ===")
+    logger.info("Method: %s", request.method)
+    logger.info("URL: %s", str(request.url))
+    logger.info("Headers: %s", dict(request.headers))
+    logger.info("Body: %s", body_text)
+    logger.info("=== paperless REQUEST END ===")
     r.raise_for_status()
     return r.json()
 
