@@ -186,8 +186,8 @@ async def webhook(request: Request, x_worker_token: str | None = Header(default=
       raise HTTPException(status_code=401, detail="unauthorized")
 
     async def webhook(request: Request, x_worker_token: str | None = Header(default=None)):
-    body_bytes = await request.body()
-    body_text = body_bytes.decode("utf-8", errors="replace")
+      body_bytes = await request.body()
+      body_text = body_bytes.decode("utf-8", errors="replace")
 
     logger.info("=== WEBHOOK REQUEST START ===")
     logger.info("Method: %s", request.method)
