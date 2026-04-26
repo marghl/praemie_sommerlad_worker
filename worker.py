@@ -7,6 +7,12 @@ import requests
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import HTMLResponse, FileResponse
 
+import json
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("worker")
+
 app = FastAPI()
 
 @app.get("/health")
@@ -173,11 +179,25 @@ def get_document_text(document_id: int) -> str:
 
 
 @app.post("/webhook")
+#TMP for debug
+
 async def webhook(request: Request, x_worker_token: str | None = Header(default=None)):
     if not hmac.compare_digest(x_worker_token or "", WORKER_TOKEN):
       raise HTTPException(status_code=401, detail="unauthorized")
 
-    payload = await request.json()
+    async def webhook(request: Request, x_worker_token: str | None = Header(default=None)):
+    body_bytes = await request.body()
+    body_text = body_bytes.decode("utf-8", errors="replace")
+
+    logger.info("=== WEBHOOK REQUEST START ===")
+    logger.info("Method: %s", request.method)
+    logger.info("URL: %s", str(request.url))
+    logger.info("Headers: %s", dict(request.headers))
+    logger.info("Body: %s", body_text)
+    logger.info("=== WEBHOOK REQUEST END ===")
+
+    # danach kannst du JSON normal parsen
+    payload = json.loads(body_text)
 
     document_id = (
         payload.get("document_id")
