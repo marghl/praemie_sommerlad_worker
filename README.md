@@ -1,24 +1,9 @@
 # Prämienauswertung Worker (Paperless-ngx)
 
 Lokaler Worker zur automatischen Auswertung von Provisions-/Spesenabrechnungen aus Paperless-ngx.
-Funktioniert nur mit den neuen (post Potiska) Abrechnungen der Sommerlag Logistik
+Funktioniert nur mit den neuen (post Potiska) Abrechnungen der Sommerlad Logistik. 
+Das Docker Release macht eigentlich keinen Sinn. Für mein NAS ist es einfacher und Spaß hab ich auch dran ;)
 
-## Funktionen
-
-- Verarbeitung von OCR-Texten aus Paperless
-- Extraktion von:
-  - Einsatzkalender (Arbeitstage, Sollminuten)
-  - Qualitätsstufen / Prämien
-- Berechnung:
-  - Soll vs. Ist Minuten
-  - Durchschnittlicher Minutenpreis
-  - Differenz in Minuten und €
-- Ausgabe:
-  - JSON (maschinenlesbar)
-  - HTML (übersichtlicher Report)
-- Unterstützung von Korrekturen (überschreiben nur relevante Felder)
-
----
 
 ## Architektur
 
