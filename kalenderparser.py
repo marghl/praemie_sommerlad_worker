@@ -5,14 +5,13 @@ from datetime import date, datetime
 import argparse
 import json
 import re
-
+import os
 
 LOGFILE = Path("kalenderparser.log")
-
 MONTH_RE = re.compile(r"Einsatz im Leistungsmonat\s+(\d{2})/(\d{4})")
 DAY_RE = re.compile(r"^(0[1-9]|[12][0-9]|3[01])\s+(Mo|Di|Mi|Do|Fr|Sa|So)\s+(.*)$")
 SUMME_RE = re.compile(r"^Summe\s+(.+)$")
-
+MINUTEN = int(os.getenv("MINUTEN_PRO-TAG"))
 
 def log(level: str, message: str) -> None:
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -247,7 +246,7 @@ def parse_kalender(text: str) -> dict:
         "summe": summe,
         "kennzahlen": {
             "arbeitstage": sum(1 for tag in tage if tag["arbeitstag"]),
-            "soll_minuten": sum(420 for tag in tage if tag["arbeitstag"]),
+            "soll_minuten": sum(MINUTEN for tag in tage if tag["arbeitstag"]),
             "sonderfaelle": sum(1 for tag in tage if tag["sonderfall"] is not None),
         },
     }
