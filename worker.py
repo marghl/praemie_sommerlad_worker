@@ -174,19 +174,19 @@ def extract_id(url: str) -> int:
 
 
 
-def get_document(document_id: str) -> dict:
-    doc_id = extract_id(document_id)
+def get_document(document_url: str) -> dict:
+    document_id = extract_id(document_url)
     r = requests.get(
-        f"{PAPERLESS_URL}/api/documents/{doc_id}/",
+        f"{PAPERLESS_URL}/api/documents/{document_id}/",
         headers=HEADERS,
         timeout=30,
     )
-    #logger.info("=== Paperless REQUEST START ===")
+    logger.info("=== Paperless REQUEST START ===")
     #logger.info("Method: %s", request.method)
-    #logger.info("URL: %s", str(request.url))
-    #logger.info("Headers: %s", dict(request.headers))
+    logger.info("URL: %s", str(r.url))
+    logger.info("Headers: %s", dict(r.headers))
     #logger.info("Body: %s", body_text)
-    #logger.info("=== paperless REQUEST END ===")
+    logger.info("=== paperless REQUEST END ===")
 
     r.raise_for_status()
     return r.json()
