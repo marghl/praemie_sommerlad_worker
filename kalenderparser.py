@@ -11,7 +11,7 @@ LOGFILE = Path("kalenderparser.log")
 MONTH_RE = re.compile(r"Einsatz im Leistungsmonat\s+(\d{2})/(\d{4})")
 DAY_RE = re.compile(r"^(0[1-9]|[12][0-9]|3[01])\s+(Mo|Di|Mi|Do|Fr|Sa|So)\s+(.*)$")
 SUMME_RE = re.compile(r"^Summe\s+(.+)$")
-MINUTEN = int(os.environ("MINUTEN_PRO-TAG"))
+MINUTEN = int(os.getenv("MINUTEN_PRO_TAG"))
 
 def log(level: str, message: str) -> None:
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
