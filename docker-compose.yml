@@ -16,7 +16,7 @@ services:
       PAPERLESS_TOKEN: ${PAPERLESS_TOKEN}
       WORKER_TOKEN: ${WORKER_TOKEN}
       OUTPUT_DIR: /data
-      MINUTEN_PRO-TAG: "400"
+      MINUTEN_PRO_TAG: "400"
 
     volumes:
       - ./data:/data

@@ -5,7 +5,7 @@ from datetime import datetime
 import argparse
 import json
 import re
-
+import os
 
 LOGFILE = Path("verdienstparser.log")
 
@@ -13,6 +13,7 @@ BLOCK_RE = re.compile(
     r"Berechnung Auslieferprämie Leistungsmonat\s+(\d{2})/(\d{4})(?:\s+\((Korrektur)\))?",
     re.IGNORECASE,
 )
+#MINUTEN = int(os.environ("MINUTEN_PRO-TAG"))
 
 Q_ROW_RE = re.compile(r"^\s*(\d+)\s+(.+?)\s*€?\s*$")
 SUMME_RE = re.compile(r"^Summe:\s+(.+?)\s*€?\s*$")
