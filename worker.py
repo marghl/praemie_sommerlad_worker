@@ -11,6 +11,8 @@ from fastapi.responses import HTMLResponse, FileResponse
 import json
 import logging
 
+from urllib.parse import urlparse
+
 logging.basicConfig(level=logging.DEBUG,
     stream=sys.stdout,
     format="%(asctime)s [%(levelname)s] [%(name)s] %(message)s")
@@ -161,10 +163,21 @@ HEADERS = {"Authorization": f"Token {PAPERLESS_TOKEN}"}
 def run(cmd: list[str]) -> None:
     subprocess.run(cmd, check=True)
 
+def extract_id(url: str) -> int:
+    path = urlparse(url).path.strip("/")
+    parts = path.split("/")
 
-def get_document(document_id: int) -> dict:
+    if not parts or not parts[-1].isdigit():
+        raise ValueError("Keine gültige numerische ID am Ende der URL")
+
+    return int(parts[-1])
+
+
+
+def get_document(document_id: str) -> dict:
+    doc_id = extract_id(document_id)
     r = requests.get(
-        f"{PAPERLESS_URL}/api/documents/{document_id}/",
+        f"{PAPERLESS_URL}/api/documents/{doc_id}/",
         headers=HEADERS,
         timeout=30,
     )
