@@ -174,8 +174,8 @@ def extract_id(url: str) -> int:
 
 
 
-def get_document(document_url: str) -> dict:
-    document_id = extract_id(document_url)
+def get_document(document_id: int) -> dict:
+
     r = requests.get(
         f"{PAPERLESS_URL}/api/documents/{document_id}/",
         headers=HEADERS,
@@ -225,19 +225,21 @@ async def webhook(request: Request, x_worker_token: str | None = Header(default=
     except json.JSONDecodeError as exc:
         raise HTTPException(status_code=400, detail=f"Invalid JSON: {exc}")
 
-    document_id = (
+    document_url = (
         payload.get("document_id")
         or payload.get("id")
         or payload.get("document")
     )
-    logger.info("document id: %s", document_id)
-    if isinstance(document_id, dict):
-        document_id = document_id.get("id")
+    logger.info("document url: %s", document_url)
+    if isinstance(document_url, dict):
+        document_url = document_url.get("id")
+
+    document_id = extract_id(document_url)
 
     if document_id is None:
         raise HTTPException(status_code=400, detail=f"Keine document_id im Payload: {payload}")
 
-    document_id = int(document_id)
+    #document_id = int(document_id)
 
     tmp_dir = OUTPUT_DIR / "tmp"
     tmp_dir.mkdir(parents=True, exist_ok=True)
