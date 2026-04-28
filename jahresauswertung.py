@@ -4,10 +4,10 @@ from pathlib import Path
 from datetime import datetime
 import argparse
 import json
-
+import os
 
 LOGFILE = Path("jahresauswertung.log")
-
+MINUTEN = int(os.getenv("MINUTEN_PRO_TAG"))
 
 def log(level: str, message: str) -> None:
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -77,7 +77,7 @@ def berechne_monat(year_dir: Path, year: int, month: int) -> dict:
     qualitaetsstufen = verdienst.get("qualitaetsstufen", [])
 
     arbeitstage = sum(1 for tag in tage if tag.get("arbeitstag") is True)
-    soll_minuten = arbeitstage * 420
+    soll_minuten = arbeitstage * MINUTEN
 
     minuten_laut_abrechnung = safe_sum(
         row.get("arbeitswert") for row in qualitaetsstufen
